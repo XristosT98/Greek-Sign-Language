@@ -95,6 +95,12 @@ Random Forest, KNN, SVM, and MLP algorithms were evaluated.
 
 ![Model Accuracy Comparison](Greek%20Alphabet%20Recognition/model_comparison_accuracy.png)
 
+### Inference Time Comparison
+
+The following chart compares inference times across the evaluated models. MLP recorded the lowest time at **0.0025 ms per sample**.
+
+![Model Inference Time Comparison](Greek%20Alphabet%20Recognition/model_comparison_time.png)
+
 ### Dynamic Signs (Words)
 A unified, hybrid dataset of 5,864 samples was created to train the dynamic models.
 
@@ -123,5 +129,5 @@ A proposed extension involves integrating the system into smart glasses with a t
 
 This research project was carried out by:
 
-* **Charalampos Zisis**
+* **[Charalampos Zisis](https://github.com/CharalamposZisis)**
 * **Christos Tsamis**
