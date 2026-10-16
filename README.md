@@ -1,121 +1,127 @@
-# Αναγνώριση και Μετάφραση Ελληνικής Νοηματικής Γλώσσας σε Πραγματικό Χρόνο
+# Real-Time Greek Sign Language Recognition and Translation
 
-![Στιγμιότυπο Ζωντανής Μετάφρασης](live_mobile.webp)
+![Live Translation Screenshot](live_mobile.webp)
 
-Ένα ολοκληρωμένο, end-to-end σύστημα Τεχνητής Νοημοσύνης για την αναγνώριση του Ελληνικού Δακτυλικού Αλφαβήτου (στατικά νοήματα) και Ελληνικών Λέξεων/Φράσεων (δυναμικά νοήματα) σε πραγματικό χρόνο, μέσω τεχνικών Μηχανικής Όρασης και Βαθιάς Μάθησης.
+A complete, end-to-end AI system for real-time recognition of the Greek fingerspelling alphabet (static signs) and Greek words/phrases (dynamic signs), using computer vision and deep learning techniques.
 
 ---
 
-## Δομή του Έργου
+## Project Structure
 
-Το έργο είναι δομημένο σε δύο ανεξάρτητα υποσυστήματα, το καθένα βελτιστοποιημένο για τη φύση των δεδομένων του:
+The project consists of two independent subsystems, each optimized for the nature of its data:
 
-1. **Greek Alphabet Recognition:** Ταξινόμηση 24 στατικών γραμμάτων χρησιμοποιώντας Μηχανική Μάθηση.
-2. **Greek Phrases Recognition:** Αναγνώριση χρονικών ακολουθιών (λέξεων) χρησιμοποιώντας αρχιτεκτονικές Deep Learning και ανάπτυξη Web Server (FastAPI) για ζωντανή μετάδοση.
+1. **Greek Alphabet Recognition:** Classification of 24 static letters using machine learning.
+2. **Greek Phrases Recognition:** Recognition of temporal sequences (words) using deep learning architectures, with a FastAPI web server for live streaming.
 
-### Τεχνολογικό Υπόβαθρο
-* **Computer Vision:** OpenCV, MediaPipe (εξαγωγή χωρικών χαρακτηριστικών / landmarks).
-* **Machine Learning (Στατικά):** Multi-Layer Perceptron (MLP).
-* **Deep Learning (Δυναμικά):** LSTM, BiLSTM, Transformer, SPOTER.
+### Technology Stack
+* **Computer Vision:** OpenCV, MediaPipe (spatial feature / landmark extraction).
+* **Machine Learning (Static Signs):** Multi-Layer Perceptron (MLP).
+* **Deep Learning (Dynamic Signs):** LSTM, BiLSTM, Transformer, SPOTER.
 * **Backend & Deployment:** Python, FastAPI, Cloudflare Tunnels.
 
 ---
 
-## Εγκατάσταση και Προαπαιτούμενα
+## Installation and Prerequisites
 
-Απαιτείται εγκατάσταση της γλώσσας Python (έκδοση 3.10 ή νεότερη) και κάμερα υπολογιστή.
+Python 3.10 or later and a webcam are required.
 
-**1. Κλωνοποίηση του αποθετηρίου:**
+**1. Clone the repository:**
 ```bash
 git clone https://github.com/CharalamposZisis/Greek-Sign-Language.git
 cd Greek-Sign-Language
 ```
 
-**2. Δημιουργία Εικονικού Περιβάλλοντος (προαιρετικά αλλά συνιστάται):**
+**2. Create a Virtual Environment (optional but recommended):**
 ```bash
 python -m venv venv
-# Για Windows:
+# For Windows:
 venv\Scripts\activate
-# Για Linux/Mac:
+# For Linux/macOS:
 source venv/bin/activate
 ```
 
-**3. Εγκατάσταση εξαρτήσεων:**
+**3. Install dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## Οδηγίες Χρήσης (Εκτέλεση σε Πραγματικό Χρόνο)
+## Usage Instructions (Real-Time Inference)
 
-### Σύστημα 1: Αναγνώριση Στατικών Γραμμάτων
-Αυτό το υποσύστημα ενεργοποιεί την κάμερα και ταξινομεί ζωντανά το δακτυλικό αλφάβητο, προβάλλοντας το ποσοστό βεβαιότητας (Confidence Score) μέσω του βέλτιστου εκπαιδευμένου MLP μοντέλου.
+### System 1: Static Letter Recognition
+This subsystem activates the webcam and recognizes fingerspelling letters in real time, displaying a confidence score using the best-performing trained MLP model.
 
-**Εκτέλεση:**
+**Run:**
 ```bash
 cd "Greek Alphabet Recognition"
 python live_recognition_relative.py
 ```
 
-### Σύστημα 2: Αναγνώριση Δυναμικών Λέξεων (Live Server)
-Αυτό το υποσύστημα εκτελεί το μοντέλο SPOTER (Sign Pose-based Transformer) μέσω ενός FastAPI server, επιτρέποντας τη ζωντανή μετάφραση σε πραγματικό χρόνο.
+### System 2: Dynamic Word Recognition (Live Server)
+This subsystem runs the SPOTER (Sign Pose-based Transformer) model through a FastAPI server, enabling live, real-time translation.
 
-**Εκτέλεση Τοπικού Server:**
+**Start the Local Server:**
 ```bash
 cd "Greek Phrases Recognition"
 python server.py
 ```
-Ο server θα ξεκινήσει τοπικά. Μπορείτε να δείτε το περιβάλλον μετάφρασης ανοίγοντας τον browser σας στη διεύθυνση: `http://localhost:8000`
 
-**Δημόσια Πρόσβαση (Μέσω Cloudflare):**
-Για να μοιραστείτε τη ζωντανή ροή της μετάφρασης με τρίτους μέσω διαδικτύου, ανοίξτε ένα δεύτερο τερματικό και εκτελέστε:
+The server will start locally. Open [the local translation interface](http://localhost:8000) in your browser.
+
+**Public Access (via Cloudflare):**
+
+To share the live translation stream with others over the internet, open a second terminal and run:
 ```bash
 cloudflared tunnel --url http://localhost:8000
 ```
-Θα παραχθεί ένα προσωρινό δημόσιο URL, το οποίο μπορείτε να κοινοποιήσετε.
+
+A temporary public URL will be generated, which you can share.
 
 ---
 
-## Απόδοση Μοντέλων
+## Model Performance
 
-Η επιλογή των τελικών μοντέλων παραγωγής (production models) έγινε κατόπιν εκτενούς αξιολόγησης και ελέγχου υπερπροσαρμογής (overfitting).
+The final production models were selected following extensive evaluation and checks for overfitting.
 
-Λόγω της έλλειψης ανοιχτού συνόλου δεδομένων για το ελληνικό δακτυλικό αλφάβητο, αναπτύχθηκε ένα ειδικό εργαλείο σε Python και δημιουργήθηκε ένα προσαρμοσμένο σύνολο από το μηδέν.
+Due to the lack of an open dataset for the Greek fingerspelling alphabet, a dedicated Python tool was developed and a custom dataset was created from scratch.
 
-### Στατικά Νοήματα (Γράμματα)
-Αξιολογήθηκαν αλγόριθμοι Random Forest, KNN, SVM και MLP.
-* **Επιλεγμένο Μοντέλο:** Multi-Layer Perceptron (MLP).
-* **Ακρίβεια (Test Set):** 99.01%.
-* **Χρόνος Συμπερασματολογίας:** 0.0025 ms / frame (αποτροπή flickering).
+### Static Signs (Letters)
+Random Forest, KNN, SVM, and MLP algorithms were evaluated.
 
-![Σύγκριση Ακρίβειας Μοντέλων](Greek%20Alphabet%20Recognition/model_comparison_accuracy.png)
+* **Selected Model:** Multi-Layer Perceptron (MLP).
+* **Accuracy (Test Set):** 99.01%.
+* **Inference Time:** 0.0025 ms / frame (preventing flickering).
 
-### Δυναμικά Νοήματα (Λέξεις)
-Για την εκπαίδευση των δυναμικών μοντέλων δημιουργήθηκε ένα ενοποιημένο, υβριδικό σύνολο 5.864 δειγμάτων. 
-* Αξιοποιήθηκαν 5.064 δείγματα από το δημόσιο σύνολο δεδομένων GSL. 
-* Συλλέχθηκαν ειδικά από τους συγγραφείς της εργασίας μέσω κάμερας υπολογιστή (webcam) επιπλέον 800 δείγματα. 
-* Τα δεδομένα αυτά ενσωματώθηκαν με τα δεδομένα του GSL dataset αυξάνοντας το συνολικό δείγμα εκπαίδευσης.
+![Model Accuracy Comparison](Greek%20Alphabet%20Recognition/model_comparison_accuracy.png)
 
-![Διαδικασία συλλογής δεδομένων ελληνικών λέξεων](Picture5.png)
+### Dynamic Signs (Words)
+A unified, hybrid dataset of 5,864 samples was created to train the dynamic models.
 
-Αξιολογήθηκαν οι αρχιτεκτονικές LSTM, BiLSTM, Transformer και SPOTER. 
-* **Αξιολογηθέντα Μοντέλα:** Το BiLSTM επέδειξε ακρίβεια 97.60%, το LSTM 97.21% και ο Transformer Encoder 96.21%.
-* **Επιλεγμένο Μοντέλο:** Το μοντέλο SPOTER (Sign Pose-based Transformer) επέδειξε εξαιρετική απόδοση, επιτυγχάνοντας 99.77% ακρίβεια. Η υψηλή του απόδοση αποδίδεται στην αρχιτεκτονική του που συνδυάζει encoder και decoder με class query mechanism.
+* 5,064 samples were obtained from the public GSL dataset.
+* An additional 800 samples were collected specifically for this project by the authors using a webcam.
+* These custom samples were combined with the GSL dataset, increasing the total training sample size.
 
----
+![Greek Word Data Collection Process](Picture5.png)
 
-## Μελλοντικές Επεκτάσεις (Smart Glasses)
+LSTM, BiLSTM, Transformer, and SPOTER architectures were evaluated.
 
-Προτείνεται η ενσωμάτωση του συστήματος σε έξυπνα γυαλιά με διαφανή οθόνη OLED. Τα έξυπνα γυαλιά θα λαμβάνουν video από μια μικρή ενσωματωμένη κάμερα, θα εκτελούν τον αλγόριθμο SPOTER σε κάποιον επεξεργαστή (όπως ένα Raspberry Pi) και θα εμφανίζουν την πρόβλεψη απευθείας στη μικρή OLED οθόνη. Αυτό θα προσφέρει πλήρη αυτονομία, επιτρέποντας στον χρήστη να βλέπει τις μεταφράσεις σε πραγματικό χρόνο χωρίς την ανάγκη για κινητό τηλέφωνο ή οθόνη υπολογιστή.
-
-![Εξυπνα γυαλιά με ενσωματωμένη κάμερα και οθόνη OLED](Picture6.png)
+* **Evaluated Models:** BiLSTM achieved 97.60% accuracy, LSTM achieved 97.21%, and the Transformer Encoder achieved 96.21%.
+* **Selected Model:** SPOTER (Sign Pose-based Transformer) demonstrated excellent performance, achieving 99.77% accuracy. Its high performance is attributed to its architecture, which combines an encoder and a decoder with a class query mechanism.
 
 ---
 
-## Ομάδα Ανάπτυξης
+## Future Extensions (Smart Glasses)
 
-Η παρούσα ερευνητική εργασία εκπονήθηκε από τους:
+A proposed extension involves integrating the system into smart glasses with a transparent OLED display. The glasses would capture video through a small built-in camera, run the SPOTER algorithm on a processor such as a Raspberry Pi, and display predictions directly on the small OLED screen. This would enable fully standalone operation, allowing users to view translations in real time without needing a smartphone or computer screen.
 
-* **Ζήσης Χαράλαμπος**
-* **Τσάμης Χρήστος**
+![Smart Glasses with a Built-in Camera and OLED Display](Picture6.png)
+
+---
+
+## Development Team
+
+This research project was carried out by:
+
+* **Charalampos Zisis**
+* **Christos Tsamis**
